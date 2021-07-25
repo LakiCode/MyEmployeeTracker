@@ -11,11 +11,11 @@ CREATE TABLE department (
 CREATE TABLE role (
   id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
-  salary DECIMAL(10,2) NOT NULL,
-  department_id INTEGER,
+  salary DECIMAL NOT NULL,
+  department_id INTEGER NOT NULL,
   FOREIGN KEY(department_id)
   REFERENCES department(id)
-  ON DELETE SET NULL
+  ON DELETE CASCADE
 );
 
 CREATE TABLE employee (
@@ -23,7 +23,7 @@ CREATE TABLE employee (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   manager_id INTEGER,
-  role_id INTEGER,
+  role_id INTEGER ,
   FOREIGN KEY(role_id)
   REFERENCES role(id)
   ON DELETE SET NULL
