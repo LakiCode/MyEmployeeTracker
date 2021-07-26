@@ -1,6 +1,7 @@
 const express = require("express");
 const inquirer = require("inquirer");
-const db = require("./db/connections");
+require('console.table');
+const db = require('./db/connections');
 const PORT = process.env.PORT || 3002;
 const app = express();
 // Express middleware
@@ -53,9 +54,9 @@ function menuOptions() {
     ])
     .then((choice) => {
       if (choice.menuList === "View All Employees") {
-        console.log("call function viewAllEmployees");
+        viewAllEmployees();
       } else if (choice.menuList === "View All Employees by Department") {
-        console.log("call function viewAllEmployeesByDep");
+        viewAllEmployeesByDep();
       } else if (choice.menuList === "View All Employees by Manager") {
         console.log("call function viewAllEmployeesByMgmt");
       } else if (choice.menuList === "Add Employee") {
@@ -78,10 +79,61 @@ function menuOptions() {
 menuOptions();
 
 // function to view employees
-//make query
+function viewAllEmployees() {
+  console.log(`
+   ****** Employees *******
+  `)
+ 
+  db.query("SELECT * FROM employee", function (err, rows) {
+    // if(err !== null)
+    // {
+     
+    //   console.table(rows);
+    //   menuOptions();
+    // } else
+    // {
+    //   console.log (err)
+    //   console.log("Error: table Empolyees not exist or is empty!" )
+    //   // empty return to stop process 
+    //   return menuOptions();
+    // }
+    console.table(rows);
+    
+  });
+}
 
 // function  to view employees by deparment
-//make query
+function viewAllEmployeesByDep () {
+  console.log(`
+  ****** View Employees by Department *******
+ `)
+ // Query database
+db.query('SELECT * FROM department', function (err, res) {
+  console.log(res);
+  const depArray = res.map(department =>{
+    return ({
+          name: department.depName
+       })
+      })
+  console.log (depArray.depName)
+  inquirer.prompt([
+    {
+      type:'list',
+      name:'department',
+      message: "Select department to view Empolyees",
+      choices: depArray
+    }
+  ])
+  .then((choice) => {
+    console.log("You selected: ", choice.department );
+    db.query('SELECT * FROM department WHERE depName = ?', choice.department, function (err,res) {
+      console.table(res);
+    })
+  }
+  )
+
+});
+}
 
 // function to view  employee as manager
 //query to view employee
