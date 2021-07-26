@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express");
 const inquirer = require("inquirer");
 require('console.table');
@@ -126,7 +127,16 @@ db.query('SELECT * FROM department', function (err, res) {
   ])
   .then((choice) => {
     console.log("You selected: ", choice.department );
-    db.query('SELECT * FROM department WHERE depName = ?', choice.department, function (err,res) {
+    db.query(`SELECT e.first_name AS Firts_Name
+    , e.last_name AS Last_Name
+    , r.title
+    , d.depName AS Department_Name
+    FROM employee e
+     INNER JOIN role r
+     ON e.role_id = r.id
+     left outer join department d
+     on r.department_id = d.id  
+     WHERE depName = ?`, choice.department, function (err,res) {
       console.table(res);
     })
   }
