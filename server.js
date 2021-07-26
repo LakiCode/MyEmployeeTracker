@@ -59,7 +59,7 @@ function menuOptions() {
       } else if (choice.menuList === "View All Employees by Department") {
         viewAllEmployeesByDep();
       } else if (choice.menuList === "View All Employees by Manager") {
-        console.log("call function viewAllEmployeesByMgmt");
+        viewAllEmployeesByMgmt();
       } else if (choice.menuList === "Add Employee") {
         console.log("call function Add Employee");
       } else if (choice.menuList === "Remove Employee") {
@@ -85,21 +85,19 @@ function viewAllEmployees() {
    ****** Employees *******
   `)
  
-  db.query("SELECT * FROM employee", function (err, rows) {
-    // if(err !== null)
-    // {
-     
-    //   console.table(rows);
-    //   menuOptions();
-    // } else
-    // {
-    //   console.log (err)
-    //   console.log("Error: table Empolyees not exist or is empty!" )
-    //   // empty return to stop process 
-    //   return menuOptions();
-    // }
+  db.query(`SELECT e.first_name AS Firts_Name
+  , e.last_name AS Last_Name
+  , r.title AS Title
+  , r.salary AS Salary
+  , d.depName AS Department_Name
+  FROM employee e
+   INNER JOIN role r
+   ON e.role_id = r.id
+   left outer join department d
+   on r.department_id = d.id  `, function (err, rows) {
+ 
     console.table(rows);
-    
+    menuOptions();
   });
 }
 
@@ -110,7 +108,7 @@ function viewAllEmployeesByDep () {
  `)
  // Query database
 db.query('SELECT * FROM department', function (err, res) {
-  console.log(res);
+ 
   const depArray = res.map(department =>{
     return ({
           name: department.depName
@@ -129,7 +127,7 @@ db.query('SELECT * FROM department', function (err, res) {
     console.log("You selected: ", choice.department );
     db.query(`SELECT e.first_name AS Firts_Name
     , e.last_name AS Last_Name
-    , r.title
+    , r.title AS Title
     , d.depName AS Department_Name
     FROM employee e
      INNER JOIN role r
@@ -137,7 +135,10 @@ db.query('SELECT * FROM department', function (err, res) {
      left outer join department d
      on r.department_id = d.id  
      WHERE depName = ?`, choice.department, function (err,res) {
+
+
       console.table(res);
+      menuOptions();
     })
   }
   )
@@ -145,8 +146,63 @@ db.query('SELECT * FROM department', function (err, res) {
 });
 }
 
-// function to view  employee as manager
-//query to view employee
+// function to view  employee by manager
+function viewAllEmployeesByMgmt () {
+  console.log(`
+  ****** View Employees by Manager *******
+ `)
+ // Query database
+db.query(`SELECT id, CONCAT_WS(" ", first_name, last_name) AS full_name 
+        FROM employee WHERE manager_id IS NOT NULL`, function (err, res) {
+ 
+  const mngArray = res.map(manager =>{
+    return ({
+          name: manager.full_name,
+          id: manager.id
+       })
+      })
+  
+  inquirer.prompt([
+    {
+      type:'list',
+      name:'manager',
+      id: 'id',
+      message: "Select Manager to view Empolyees",
+      choices: mngArray
+    }
+  ])
+  .then((choice) => {
+    console.log(choice.id)
+    console.log(choice.manager, "is a manager for list of employees:" );
+    db.query(`SELECT e.first_name AS Firts_Name
+    , e.last_name AS Last_Name
+    FROM employee e
+     INNER JOIN role r
+     ON e.role_id = r.id
+     left outer join department d
+     on r.department_id = d.id  
+     WHERE depName = ?`, choice.manager, function (err,res) {
+
+
+      console.table(res);
+      menuOptions();
+    })
+  }
+  )
+
+});
+}
+
+// function add employee
+//query to view employ
+
+// function remove empoloee
+// query Delete employee
+
+// function update employee role
+// query to update employee role
+
+// function to exit
 
 // function remove empoloee
 // query Delete employee
