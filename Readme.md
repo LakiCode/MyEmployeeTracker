@@ -37,4 +37,4 @@
 ![alt text](/Images/app_console.JPG "Application console-line")
 ![alt text](/Images/mySQL.JPG "Employee and Role tables in MySQL")
 ### Application Demo Video
-<a href="https://drive.google.com/file/d/1mJwMRflS8mz9ZYLJP05_hK_he0M2pDT0/view" target="_blank">App demo video</a>
+<a href="https://drive.google.com/file/d/1bq61wWj0gQauiBhyWpxELLKFiaiz_jjt/view" target="_blank">App demo video</a>

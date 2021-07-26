@@ -1,6 +1,8 @@
 const e = require("express");
 const express = require("express");
 const inquirer = require("inquirer");
+const { values } = require("mysql2/lib/constants/charset_encodings");
+const { NULL } = require("mysql2/lib/constants/types");
 require('console.table');
 const db = require('./db/connections');
 const PORT = process.env.PORT || 3002;
@@ -61,7 +63,7 @@ function menuOptions() {
       } else if (choice.menuList === "View All Employees by Manager") {
         viewAllEmployeesByMgmt();
       } else if (choice.menuList === "Add Employee") {
-        console.log("call function Add Employee");
+        AddEmployee();
       } else if (choice.menuList === "Remove Employee") {
         console.log("call function RemoveEmpoyee");
       } else if (choice.menuList === "Update Employee Role") {
@@ -153,7 +155,7 @@ function viewAllEmployeesByMgmt () {
  `)
  // Query database
 db.query(`SELECT id, CONCAT_WS(" ", first_name, last_name) AS full_name 
-        FROM employee WHERE manager_id IS NOT NULL`, function (err, res) {
+        FROM employee WHERE manager_id IS NULL`, function (err, res) {
  
   const mngArray = res.map(manager =>{
     return ({
@@ -194,7 +196,66 @@ db.query(`SELECT id, CONCAT_WS(" ", first_name, last_name) AS full_name
 }
 
 // function add employee
-//query to view employ
+function AddEmployee () {
+  db.query('SELECT id, title FROM role', function (err, res){
+    const roleArray = res.map(role =>{
+      return ({
+            name:role.title,
+            value:role.id
+         })
+        })
+
+        db.query(`SELECT id, CONCAT_WS(" ", first_name, last_name) AS full_name 
+        FROM employee WHERE manager_id IS NULL `, function (err, res) {
+ 
+  const mngArray = res.map(manager =>{
+    return ({
+          name: manager.full_name,
+          value: manager.id
+       })
+      })
+    
+  console.log(mngArray)
+  inquirer.prompt([
+    {
+      type:'input',
+      name:'first_name',
+      message: "Enter Employee First Name",
+    },
+    {
+      type:'input',
+      name:'last_name',
+      message: "Enter Employee Last Name",
+    },
+    {
+          type:'list',
+          name:'role_id',
+          message: "Select role for Employee",
+          choices: roleArray
+       },
+       {
+        type:'list',
+        name:'manager_id',
+        message: "Select Manager for Employee",
+        choices: mngArray
+        
+     }
+  ])
+  .then ((newEmployee) => {
+    console.log(newEmployee)
+    db.query('INSERT INTO employee SET ?', newEmployee, function(err){
+      if (err) {
+        console.log(err)
+        return
+      } else {
+        console.log('New Employee added in to database')
+      }
+    });
+  });
+  });
+});
+}
+
 
 // function remove empoloee
 // query Delete employee
