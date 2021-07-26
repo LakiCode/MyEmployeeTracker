@@ -34,7 +34,7 @@
  My email address is: 
  rfuke@loffacorp.com
 ## App screenshots
-![alt text](images/app_console.JPG "Application console-line")
-![alt text](/images/mySQL.JPG "Employee and Role tables in MySQL")
+![alt text](/Images/app_console.JPG "Application console-line")
+![alt text](/Images/mySQL.JPG "Employee and Role tables in MySQL")
 ### Application Demo Video
 <a href="https://drive.google.com/file/d/1mJwMRflS8mz9ZYLJP05_hK_he0M2pDT0/view" target="_blank">App demo video</a>
