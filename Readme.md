@@ -1,8 +1,8 @@
 # Project Name
   My Employee Tracker
   ## Badge 
-[![Node js](https://img.shields.io/badge/node.js-%2343853D.svg?style=for-the-badge&logo=node-dot-js&logoColor=white)](https://shields.io/)
-[![MySQL](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=MySLQ&logoColor=white)](https://shields.io/)
+[![Node js](https://img.shields.io/badge/node.js-%2343853D.svg?style=for-the-badge&logo=node-dot-js&logoColor=white)](https://shields.io/)  
+[![MySQL](https://img.shields.io/badge/MySQL-%23E34F26.svg?style=for-the-badge&logo=MySLQ&logoColor=white)](https://shields.io/)  
 [![inquirer](https://img.shields.io/badge/inquirer-%231572B6.svg?style=for-the-badge&logo=inquirer&logoColor=white)](https://shields.io/)
 [![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://shields.io/)
 
@@ -21,9 +21,9 @@
   ## Credits 
  Robert Fuke
   ## License 
-  https://choosealicense.com/licenses/express.js/
-  https://choosealicense.com/licenses/mysql/
-  https://choosealicense.com/licenses/node.js/
+  https://choosealicense.com/licenses/express.js/  
+  https://choosealicense.com/licenses/mysql/  
+  https://choosealicense.com/licenses/node.js/  
 
   ## Questions
   ### GitHub 
